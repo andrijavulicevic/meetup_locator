@@ -1,7 +1,15 @@
 <template>
-  <div id="app">
-    <meetup-locator></meetup-locator>
-  </div>
+  <v-app id="inspire">
+    <v-content>
+        <v-container fluid fill-height>
+            <v-layout justify-center align-start>
+              <transition enter-active-class="animated bounceInRight">
+                <meetup-locator></meetup-locator>
+              </transition>
+            </v-layout>
+        </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -18,12 +26,14 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.top-right-x {
+  position: absolute !important;
+  top: 10px;
+  right: 10px;
+  font-weight: bold;
+  z-index: 1;
+}
+.relative {
+  position: relative;
 }
 </style>

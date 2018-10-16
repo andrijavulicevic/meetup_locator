@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import jsonp from 'jsonp'
 
+import * as action from './actionNames'
+import * as getter from './getterNames'
+
 import { API_URL, API_TOKEN } from '../config/app'
 
 Vue.use(Vuex)
@@ -15,11 +18,11 @@ const state = {
   loadingEvents: false
 }
 const getters = {
-  getCities: state => state.cities,
-  getLoadingCities: state => state.loadingCities,
-  getError: state => state.error,
-  getEvents: state => state.events,
-  getLoadingEvents: state => state.loadingEvents
+  [getter.GET_CITIES]: state => state.cities,
+  [getter.GET_LOADING_CITIES]: state => state.loadingCities,
+  [getter.GET_ERROR]: state => state.error,
+  [getter.GET_EVENTS]: state => state.events,
+  [getter.GET_LOADING_EVENTS]: state => state.loadingEvents
 }
 const mutations = {
   setCities(state, cities) {
@@ -39,7 +42,7 @@ const mutations = {
   }
 }
 const actions = {
-  loadCities({ commit }) {
+  [action.LOAD_CITIES] ({ commit }) {
     commit('toggleLoadingCities')
     commit('setError', null)
     jsonp(
@@ -54,17 +57,17 @@ const actions = {
         }
       })
   },
-  loadEvents({ commit }, { lat, lon }) {
+  [action.LOAD_EVENTS] ({ commit }, { lat, lon }) {
     commit('toggleLoadingEvents')
     commit('setError', null)
     jsonp(
-      `${API_URL}/find/upcoming_events?signed=true&key=${API_TOKEN}&lat=${lat}&lon=${lon}`,
+      `${API_URL}/find/upcoming_events?signed=true&key=${API_TOKEN}&lat=${lat}&lon=${lon}&radius=20`,
       null, (err, data) => {
         if (err) {
           commit('setError', err.message)
           commit('toggleLoadingEvents')
         } else {
-          commit('setEvents', data.results)
+          commit('setEvents', data.data.events)
           commit('toggleLoadingEvents')
         }
       })
